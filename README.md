@@ -1,107 +1,152 @@
-# Valentine's Day Interactive Page
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fama... My Forever Friend? 💕</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #fff;
+      overflow: hidden;
+      text-align: center;
+    }
+    h1 {
+      font-size: 3.8rem;
+      margin: 20px;
+      text-shadow: 0 0 20px rgba(255,255,255,0.9);
+      animation: pulse 2.8s infinite;
+    }
+    .gif {
+      max-width: 320px;
+      margin: 25px 0;
+      border-radius: 25px;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+    }
+    .buttons {
+      margin-top: 40px;
+    }
+    button {
+      padding: 20px 60px;
+      font-size: 1.8rem;
+      margin: 20px;
+      border: none;
+      border-radius: 60px;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+    #yesBtn {
+      background: #ff4757;
+      color: white;
+    }
+    #noBtn {
+      background: #57606f;
+      color: white;
+    }
+    #yesBtn:hover { transform: scale(1.12); background: #ff6b81; }
+    #noBtn:hover { transform: scale(1.12); background: #747d8c; }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    .heart-rain {
+      position: absolute;
+      top: -20px;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: -1;
+    }
+    .heart-rain span {
+      position: absolute;
+      color: #fff;
+      font-size: 2.5rem;
+      animation: fall linear infinite;
+      opacity: 0.85;
+    }
+    @keyframes fall {
+      to { transform: translateY(130vh) rotate(1080deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="heart-rain" id="hearts"></div>
 
-A fun, interactive Valentine's Day page where the "Yes" button grows bigger every time they click "No" — with falling hearts, cute GIFs, music, and playful toast messages. Built with pure HTML, CSS, and JavaScript.
+  <h1 id="question">FAMA WILL YOU BE MY FOREVER FRIEND...</h1>
+  
+  <img class="gif" id="gif" src="https://media.tenor.com/EBV7OT7ACfwAAAAj/u-u-qua-qua-u-quaa.gif" alt="cute shy character">
 
-**Live demo:** [sahilgogna.github.io/v-day](https://sahilgogna.github.io/v-day)
+  <div class="buttons">
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn">No</button>
+  </div>
 
+  <script>
+    const question = document.getElementById('question');
+    const gif = document.getElementById('gif');
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const heartsContainer = document.getElementById('hearts');
 
----
+    let noCount = 0;
+    const noPhrases = [
+      "Think again, Fama? 😏",
+      "Come on... pretty please? 🥺",
+      "My heart is glitching without you 💔",
+      "One more chance? 😭",
+      "Don't leave me hanging... 😔",
+      "Okay but I'm not giving up! ❤️"
+    ];
 
-## Want to Use This to Impress Your GF/Wife?
+    function createHeart() {
+      const heart = document.createElement('span');
+      heart.innerHTML = Math.random() > 0.5 ? '❤️' : '💕';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = (Math.random() * 4 + 5) + 's';
+      heart.style.fontSize = (Math.random() * 2 + 1.5) + 'rem';
+      heartsContainer.appendChild(heart);
+      setTimeout(() => heart.remove(), 8000);
+    }
 
-You've got three options — pick whatever works for you.
+    function startHeartRain() {
+      const interval = setInterval(createHeart, 150);
+      setTimeout(() => clearInterval(interval), 6000); // rain for ~6s
+    }
 
----
+    noBtn.addEventListener('click', () => {
+      noCount++;
+      noBtn.style.transform = `scale(${1 + noCount * 0.15})`;
+      noBtn.style.opacity = Math.max(0.3, 1 - noCount * 0.12);
+      
+      if (noCount < noPhrases.length) {
+        question.textContent = noPhrases[noCount];
+      } else {
+        question.textContent = "Fine... but I'll keep asking forever! 😘";
+      }
 
-### Option 1: Just Send the Link
+      // Optional: swap to sadder GIF if you want
+      // gif.src = "https://media.tenor.com/some-sad-cute.gif";
+    });
 
-No setup needed. Just send this link:
-
-```
-https://sahilgogna.github.io/v-day
-```
-
-That's it. Done. You're welcome.
-
----
-
-### Option 2: Fork It and Make It Yours
-
-Want your own version you can customize? Follow these steps:
-
-#### 1. Fork the Repo
-- Go to [github.com/SahilGogna/v-day](https://github.com/SahilGogna/v-day)
-- Click the **Fork** button in the top-right corner
-- This creates a copy of the repo under your GitHub account
-
-#### 2. Enable GitHub Pages
-- In your forked repo, go to **Settings** (the gear icon tab)
-- In the left sidebar, click **Pages**
-- Under **Source**, select **"Deploy from a branch"**
-- Under **Branch**, select **`main`** and **`/ (root)`**
-- Click **Save**
-
-#### 3. Wait ~2 Minutes
-- GitHub will build and deploy your site
-- Your site will be live at:
-  ```
-  https://yourusername.github.io/v-day
-  ```
-  (Replace `yourusername` with your actual GitHub username)
-
-#### 4. Personalize It
-- Edit `index.html` to change the question, title, or GIF
-- Edit `yes.html` to change the celebration page
-- Edit `script.js` to tweak the toast messages, button behavior, or GIF changes
-- Edit `style.css` to change colors, fonts, or animations
-- Swap out the music file in the `music/` folder with your own song
-
-> **Tip:** You can edit files directly on GitHub by clicking on a file and hitting the pencil (edit) icon. No need to clone anything locally if you just want quick changes.
-
----
-
-### Option 3: Vibe Code Your Own From Scratch
-
-Want something completely unique? Use AI to build it.
-
-#### 1. Open Antigravity
-- Google **"anti gravity google"** or go to [antigravity.dev](https://www.antigravity.dev)
-- It has **Sonnet 4.6** built right in — no need to go anywhere else
-
-#### 2. Describe What You Want
-- Tell it exactly what you're imagining. Some ideas:
-  - Falling hearts animation with a love letter reveal
-  - Interactive story where they choose their adventure
-  - A countdown to Valentine's Day with daily messages
-  - A quiz about your relationship
-  - Whatever your heart desires — literally
-
-#### 3. Get the Code
-- Antigravity will generate the full HTML, CSS, and JavaScript for you
-- Copy the code into files on your computer
-
-#### 4. Deploy It
-- Create a new GitHub repository
-- Push your code to it
-- Enable GitHub Pages the same way as **Option 2** (Settings → Pages → Deploy from branch → main → root → Save)
-- Your custom creation goes live in ~2 minutes
-
----
-
-## Project Structure
-
-```
-v-day/
-├── index.html       # Main page — "Will you be my Valentine?"
-├── yes.html         # Celebration page after they say Yes
-├── script.js        # Main page logic (button growth, GIF swaps, toasts)
-├── yes-script.js    # Celebration page animations
-├── style.css        # All the styling and animations
-└── music/           # Background music
-```
-
----
-
-## License
-
-Do whatever you want with it. Make someone smile.
+    yesBtn.addEventListener('click', () => {
+      startHeartRain();
+      question.innerHTML = "YAY! 💕<br>LET'S BE KISSING FOREVER 😘💋";
+      gif.src = "https://media.tenor.com/3PvUFBvriI8AAAAC/kiss-kissing.gif"; // romantic kissing GIF
+      yesBtn.style.display = 'none';
+      noBtn.style.display = 'none';
+      
+      // Extra fun: keep hearts going longer
+      setInterval(createHeart, 300);
+    });
+  </script>
+</body>
+</html>
